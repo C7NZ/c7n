@@ -1,6 +1,8 @@
 local startupArgs = ({...})[1] or {}
 
-
+if getgenv().library ~= nil then
+    getgenv().library:Unload();
+end
 
 if not game:IsLoaded() then
     game.Loaded:Wait()
@@ -4569,14 +4571,14 @@ function library:init()
             objects = {};
             text = {
                 {self.cheatname, true},
-                {("%s (uid %s)"):format(IonHub_User.User, tostring(IonHub_User.UID)), true},
-                {self.gamename, true},
-                {'0 fps', true},
+                {("%s (uid %s)"):format(IonHub_User.User, tostring(IonHub_User.UID)), false},
+                {self.gamename, false},
+                {'0 fps', false},
                 {'0ms', true},
                 {'00:00:00', true},
                 {'M, D, Y', true},
             };
-            lock = 'custom';
+            lock = 'Top';
             position = newUDim2(0,0,0,0);
             refreshrate = 25;
         }
