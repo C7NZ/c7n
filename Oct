@@ -4160,7 +4160,7 @@ function library:init()
                         callback = function() end;
                         enabled = true;
                         multi = true;
-                        open = false;
+                        open = true;
                         risky = false;
                         values = {};
                         objects = {};
