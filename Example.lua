@@ -4840,7 +4840,8 @@ function library:CreateSettingsTab(menu)
         table.insert(themeStrings, v.name)
     end
     
-    local themeSection = settingsTab:AddSection('Theme', 1);
+    local SettingsTab = menu:AddTab('Theme', 990);
+    local themeSection = SettingsTab:AddSection('Theme', 1);
     local setByPreset = false
 
     themeSection:AddList({text = 'Presets', flag = 'preset_theme', values = themeStrings, callback = function(newTheme)
