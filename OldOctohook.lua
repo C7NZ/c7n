@@ -4842,7 +4842,7 @@ function library:CreateSettingsTab(menu)
     local mainSection = settingsTab:AddSection('Theme', 1);
     local setByPreset = false
 
-    themeSection:AddList({text = 'Presets', flag = 'preset_theme', values = themeStrings, callback = function(newTheme)
+    mainSection:AddList({text = 'Presets', flag = 'preset_theme', values = themeStrings, callback = function(newTheme)
         if newTheme == "Custom" then return end
         setByPreset = true
         for _,v in next, library.themes do
@@ -4860,7 +4860,7 @@ function library:CreateSettingsTab(menu)
     end}):Select('Default');
 
     for i, v in pairs(library.theme) do
-        themeSection:AddColor({text = i, flag = i, color = library.theme[i], callback = function(c3)
+        mainSection:AddColor({text = i, flag = i, color = library.theme[i], callback = function(c3)
             library.theme[i] = c3
             library:SetTheme(library.theme)
             if not setByPreset and not setByConfig then 
