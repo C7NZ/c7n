@@ -4754,7 +4754,7 @@ function library:CreateSettingsTab(menu)
 
     refreshConfigs()
 
-    mainSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.End, callback = function()
+    mainSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.RightShift, callback = function()
         library:SetOpen(not library.open)
     end});
 
@@ -4796,16 +4796,12 @@ function library:CreateSettingsTab(menu)
         setclipboard('discord.gg/seU6gab')
     end})
 
-    mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
-        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
+    mainSection:AddButton({text = 'Copy PlaceID', confirm = false, callback = function()
+        setclipboard(game.PlaceId)
     end})
 
     mainSection:AddButton({text = 'Rejoin Game', confirm = true, callback = function()
         game:GetService("TeleportService"):Teleport(game.PlaceId);
-    end})
-
-    mainSection:AddButton({text = 'Copy Join Script', callback = function()
-        setclipboard(([[game:GetService("TeleportService"):TeleportToPlaceInstance(%s, "%s")]]):format(game.PlaceId, game.JobId))
     end})
 
     mainSection:AddButton({text = 'Copy Game Invite', callback = function()
