@@ -53,7 +53,7 @@ local library = {
         ['ping'] = 0;
     };
     images = {
-        ['gradientp90'] = 'https://raw.githubusercontent.com/portallol/luna/main/modules/gradient_new.png';
+        ['gradientp90'] = 'https://raw.githubusercontent.com/portallol/luna/main/modules/gradient90.png';
         ['gradientp45'] = 'https://raw.githubusercontent.com/portallol/luna/main/modules/gradient45.png';
         ['colorhue'] = 'https://raw.githubusercontent.com/portallol/luna/main/modules/lgbtqshit.png';
         ['colortrans'] = 'https://raw.githubusercontent.com/portallol/luna/main/modules/trans.png';
