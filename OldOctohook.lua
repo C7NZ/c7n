@@ -4839,7 +4839,6 @@ function library:CreateSettingsTab(menu)
     for _,v in next, library.themes do
         table.insert(themeStrings, v.name)
     end
-    
     local mainSection = settingsTab:AddSection('Theme', 1);
     local setByPreset = false
 
