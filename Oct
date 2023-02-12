@@ -4159,7 +4159,7 @@ function library:init()
                         order = #self.options+1;
                         callback = function() end;
                         enabled = true;
-                        multi = false;
+                        multi = true;
                         open = false;
                         risky = false;
                         values = {};
