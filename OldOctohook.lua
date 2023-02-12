@@ -61,18 +61,18 @@ local library = {
     numberStrings = {['Zero'] = 0, ['One'] = 1, ['Two'] = 2, ['Three'] = 3, ['Four'] = 4, ['Five'] = 5, ['Six'] = 6, ['Seven'] = 7, ['Eight'] = 8, ['Nine'] = 9};
     signal = loadstring(game:HttpGet('https://raw.githubusercontent.com/Quenty/NevermoreEngine/main/src/signal/src/Shared/Signal.lua'))();
     open = false;
-    opening = true;
+    opening = false;
     hasInit = false;
-    cheatname = startupArgs.cheatname or 'Fatality';
-    gamename = startupArgs.gamename or 'FatalityConfigs';
-    fileext = startupArgs.fileext or '.cfg';
+    cheatname = startupArgs.cheatname or 'octohook';
+    gamename = startupArgs.gamename or 'universal';
+    fileext = startupArgs.fileext or '.txt';
 }
 
 library.themes = {
     {
         name = 'Default',
         theme = {
-            ['Accent']                    = fromrgb(255,255,255);
+            ['Accent']                    = fromrgb(255,135,255);
             ['Background']                = fromrgb(18,18,18);
             ['Border']                    = fromrgb(0,0,0);
             ['Border 1']                  = fromrgb(60,60,60);
@@ -702,8 +702,8 @@ function library:init()
     self.cursor1 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(255,255,255), ZIndex = self.zindexOrder.cursor});
     self.cursor2 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(85,85,85), self.zindexOrder.cursor-1});
     local function updateCursor()
-        self.cursor1.Visible = false
-        self.cursor2.Visible = false
+        self.cursor1.Visible = self.open
+        self.cursor2.Visible = self.open
         if self.cursor1.Visible then
             local pos = inputservice:GetMouseLocation();
             self.cursor1.PointA = pos;
@@ -4159,7 +4159,7 @@ function library:init()
                         order = #self.options+1;
                         callback = function() end;
                         enabled = true;
-                        multi = true;
+                        multi = false;
                         open = false;
                         risky = false;
                         values = {};
@@ -4824,7 +4824,8 @@ function library:CreateSettingsTab(menu)
     for _,v in next, library.themes do
         table.insert(themeStrings, v.name)
     end
-    local themeSection = settingsTab:AddSection('Theme', 1);
+    local themeTab = menu:AddTab('Theme', 990);
+    local mainSection = themeTab:AddSection('Theme', 1);
     local setByPreset = false
 
     themeSection:AddList({text = 'Presets', flag = 'preset_theme', values = themeStrings, callback = function(newTheme)
