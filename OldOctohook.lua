@@ -1,8 +1,6 @@
 local startupArgs = ({...})[1] or {}
 
-if getgenv().library ~= nil then
-    getgenv().library:Unload();
-end
+
 
 if not game:IsLoaded() then
     game.Loaded:Wait()
