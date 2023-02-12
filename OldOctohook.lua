@@ -1,3 +1,18 @@
+--[[
+
+    Library Made for https://octohook.xyz/
+    Developed by liam#4567
+    Modified by tatar0071#0627
+
+    Ik this code is really shit in some places lol
+    will rewrite again i was just using some rly old stuff that i was lazy to rewrite
+    could've been a lot better and more optimized in some places and some things arent done as they should've been
+    got lazy when trying to make disable all roblox input when ui is open sooo that will be added later =)
+
+]]
+
+-- // Load
+
 local startupArgs = ({...})[1] or {}
 
 if getgenv().library ~= nil then
@@ -61,18 +76,18 @@ local library = {
     numberStrings = {['Zero'] = 0, ['One'] = 1, ['Two'] = 2, ['Three'] = 3, ['Four'] = 4, ['Five'] = 5, ['Six'] = 6, ['Seven'] = 7, ['Eight'] = 8, ['Nine'] = 9};
     signal = loadstring(game:HttpGet('https://raw.githubusercontent.com/Quenty/NevermoreEngine/main/src/signal/src/Shared/Signal.lua'))();
     open = false;
-    opening = true;
+    opening = false;
     hasInit = false;
-    cheatname = startupArgs.cheatname or 'Fatality';
-    gamename = startupArgs.gamename or 'FatalityConfigs';
-    fileext = startupArgs.fileext or '.cfg';
+    cheatname = startupArgs.cheatname or 'octohook';
+    gamename = startupArgs.gamename or 'universal';
+    fileext = startupArgs.fileext or '.txt';
 }
 
 library.themes = {
     {
         name = 'Default',
         theme = {
-            ['Accent']                    = fromrgb(255,255,255);
+            ['Accent']                    = fromrgb(255,135,255);
             ['Background']                = fromrgb(18,18,18);
             ['Border']                    = fromrgb(0,0,0);
             ['Border 1']                  = fromrgb(60,60,60);
@@ -702,8 +717,8 @@ function library:init()
     self.cursor1 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(255,255,255), ZIndex = self.zindexOrder.cursor});
     self.cursor2 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(85,85,85), self.zindexOrder.cursor-1});
     local function updateCursor()
-        self.cursor1.Visible = false
-        self.cursor2.Visible = false
+        self.cursor1.Visible = self.open
+        self.cursor2.Visible = self.open
         if self.cursor1.Visible then
             local pos = inputservice:GetMouseLocation();
             self.cursor1.PointA = pos;
@@ -2324,6 +2339,64 @@ function library:init()
                             end)
     
                         end
+                        ----------------------
+
+    
+                        function color:SetColor(c3, nocallback)
+                            if typeof(c3) == 'Color3' then
+                                local h,s,v = c3:ToHSV(); c3 = fromhsv(h, clamp(s,.005,.995), clamp(v,.005,.995))
+                                self.color = c3;
+                                self.objects.background.Color = c3;
+                                if not nocallback then
+                                    self.callback(c3, self.trans);
+                                end
+                                if self.open then
+                                    window.colorpicker:Visualize(self.color, self.trans);
+                                end
+                                if self.flag then
+                                    library.flags[self.flag] = c3;
+                                end
+                            end
+                        end
+    
+                        function color:SetTrans(trans, nocallback)
+                            if typeof(trans) == 'number' then
+                                self.trans = trans;
+                                if not nocallback then
+                                    self.callback(self.color, trans);
+                                end
+                                if self.open then
+                                    window.colorpicker:Visualize(self.color, self.trans);
+                                end
+                            end
+                        end
+    
+                        function color:SetOpen(bool)
+                            if typeof(bool) == 'boolean' then
+                                self.open = bool
+                                if bool then
+                                    if window.colorpicker.selected then
+                                        window.colorpicker.selected.open = false;
+                                    end
+                                    window.colorpicker.selected = color
+                                    window.colorpicker.objects.background.Parent = self.objects.background;
+                                    window.colorpicker.objects.background.Visible = true;
+                                    window.colorpicker:Visualize(color.color, color.trans)
+                                elseif window.colorpicker.selected == color then
+                                    window.colorpicker.selected = nil;
+                                    window.colorpicker.objects.background.Parent = window.objects.background;
+                                    window.colorpicker.objects.background.Visible = false;
+                                end
+                            end
+                        end
+    
+                        tooltip(color);
+                        color:SetColor(color.color, true);
+                        color:SetTrans(color.trans, true);
+                        self:UpdateOptions();
+                        return color
+                    end
+
                     function toggle:AddBind(data)
                         local bind = {
                             class = 'bind';
@@ -4501,7 +4574,7 @@ function library:init()
 
     end
     
-        -- Watermark
+    -- Watermark
     do
         if not IonHub_User then
             getgenv().IonHub_User = {
@@ -4766,8 +4839,8 @@ function library:CreateSettingsTab(menu)
     for _,v in next, library.themes do
         table.insert(themeStrings, v.name)
     end
-    local themeTab = menu:AddTab('Theme', 990);
-    local themeSection = themeTab:AddSection('Theme', 1);
+    
+    local mainSection = settingsTab:AddSection('Theme', 1);
     local setByPreset = false
 
     themeSection:AddList({text = 'Presets', flag = 'preset_theme', values = themeStrings, callback = function(newTheme)
