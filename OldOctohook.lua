@@ -4576,7 +4576,7 @@ function library:init()
                 {'0 fps', false},
                 {'0ms', true},
                 {'00:00:00', true},
-                {'M, D, Y', false},
+                {'M, D, Y', true},
             };
             lock = 'custom';
             position = newUDim2(0,0,0,0);
