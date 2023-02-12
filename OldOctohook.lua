@@ -1,18 +1,3 @@
---[[
-
-    Library Made for https://octohook.xyz/
-    Developed by liam#4567
-    Modified by tatar0071#0627
-
-    Ik this code is really shit in some places lol
-    will rewrite again i was just using some rly old stuff that i was lazy to rewrite
-    could've been a lot better and more optimized in some places and some things arent done as they should've been
-    got lazy when trying to make disable all roblox input when ui is open sooo that will be added later =)
-
-]]
-
--- // Load
-
 local startupArgs = ({...})[1] or {}
 
 if getgenv().library ~= nil then
@@ -76,18 +61,18 @@ local library = {
     numberStrings = {['Zero'] = 0, ['One'] = 1, ['Two'] = 2, ['Three'] = 3, ['Four'] = 4, ['Five'] = 5, ['Six'] = 6, ['Seven'] = 7, ['Eight'] = 8, ['Nine'] = 9};
     signal = loadstring(game:HttpGet('https://raw.githubusercontent.com/Quenty/NevermoreEngine/main/src/signal/src/Shared/Signal.lua'))();
     open = false;
-    opening = false;
+    opening = true;
     hasInit = false;
-    cheatname = startupArgs.cheatname or 'octohook';
-    gamename = startupArgs.gamename or 'universal';
-    fileext = startupArgs.fileext or '.txt';
+    cheatname = startupArgs.cheatname or 'Fatality';
+    gamename = startupArgs.gamename or 'FatalityConfigs';
+    fileext = startupArgs.fileext or '.cfg';
 }
 
 library.themes = {
     {
         name = 'Default',
         theme = {
-            ['Accent']                    = fromrgb(255,135,255);
+            ['Accent']                    = fromrgb(255,255,255);
             ['Background']                = fromrgb(18,18,18);
             ['Border']                    = fromrgb(0,0,0);
             ['Border 1']                  = fromrgb(60,60,60);
@@ -717,8 +702,8 @@ function library:init()
     self.cursor1 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(255,255,255), ZIndex = self.zindexOrder.cursor});
     self.cursor2 = utility:Draw('Triangle', {Filled = true, Color = fromrgb(85,85,85), self.zindexOrder.cursor-1});
     local function updateCursor()
-        self.cursor1.Visible = self.open
-        self.cursor2.Visible = self.open
+        self.cursor1.Visible = false
+        self.cursor2.Visible = false
         if self.cursor1.Visible then
             local pos = inputservice:GetMouseLocation();
             self.cursor1.PointA = pos;
@@ -4586,11 +4571,11 @@ function library:init()
             objects = {};
             text = {
                 {self.cheatname, true},
-                {("%s (uid %s)"):format(IonHub_User.User, tostring(IonHub_User.UID)), true},
-                {self.gamename, true},
-                {'0 fps', true},
+                {("%s (uid %s)"):format(IonHub_User.User, tostring(IonHub_User.UID)), false},
+                {self.gamename, false},
+                {'0 fps', false},
                 {'0ms', true},
-                {'00:00:00', true},
+                {'00:00:00', false},
                 {'M, D, Y', true},
             };
             lock = 'custom';
@@ -4717,7 +4702,7 @@ end
 function library:CreateSettingsTab(menu)
     local settingsTab = menu:AddTab('Settings', 999);
     local configSection = settingsTab:AddSection('Config', 2);
-    local mainSection = settingsTab:AddSection('Main', 1);
+    local mainSection = settingsTab:AddSection('Main', 2);
 
     configSection:AddBox({text = 'Config Name', flag = 'configinput'})
     configSection:AddList({text = 'Config', flag = 'selectedconfig'})
@@ -4734,7 +4719,8 @@ function library:CreateSettingsTab(menu)
 
     configSection:AddButton({text = 'Load', confirm = true, callback = function()
         library:LoadConfig(library.flags.selectedconfig);
-    end}):AddButton({text = 'Save', confirm = true, callback = function()
+    end})
+    configSection:AddButton({text = 'Save', confirm = true, callback = function()
         library:SaveConfig(library.flags.selectedconfig);
     end})
 
@@ -4745,7 +4731,8 @@ function library:CreateSettingsTab(menu)
         end
         writefile(self.cheatname..'/'..self.gamename..'/configs/'..library.flags.configinput.. self.fileext, http:JSONEncode({}));
         refreshConfigs()
-    end}):AddButton({text = 'Delete', confirm = true, callback = function()
+    end})
+    configSection:AddButton({text = 'Delete', confirm = true, callback = function()
         if library:GetConfig(library.flags.selectedconfig) then
             delfile(self.cheatname..'/'..self.gamename..'/configs/'..library.flags.selectedconfig.. self.fileext);
             refreshConfigs()
@@ -4753,47 +4740,12 @@ function library:CreateSettingsTab(menu)
     end})
 
     refreshConfigs()
-
-    mainSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.End, callback = function()
-        library:SetOpen(not library.open)
-    end});
-
-    mainSection:AddToggle({text = 'Disable Movement If Open', flag = 'disablemenumovement', callback = function(bool)
-        if bool and library.open then
-            actionservice:BindAction(
-                'FreezeMovement',
-                function()
-                    return Enum.ContextActionResult.Sink
-                end,
-                false,
-                unpack(Enum.PlayerActions:GetEnumItems())
-            )
-        else
-            actionservice:UnbindAction('FreezeMovement');
-        end
+    mainSection:AddButton({text = 'Copy JobID', confirm = false, callback = function()
+        setclipboard(game.JobId)
     end})
 
-    mainSection:AddButton({text = 'Join Discord', flag = 'joindiscord', confirm = true, callback = function()
-        local res = syn.request({
-            Url = 'http://127.0.0.1:6463/rpc?v=1',
-            Method = 'POST',
-            Headers = {
-                ['Content-Type'] = 'application/json',
-                Origin = 'https://discord.com'
-            },
-            Body = game:GetService('HttpService'):JSONEncode({
-                cmd = 'INVITE_BROWSER',
-                nonce = game:GetService('HttpService'):GenerateGUID(false),
-                args = {code = 'seU6gab'}
-            })
-        })
-        if res.Success then
-            library:SendNotification(library.cheatname..' | joined discord', 3);
-        end
-    end})
-    
-    mainSection:AddButton({text = 'Copy Discord', flag = 'copydiscord', callback = function()
-        setclipboard('discord.gg/seU6gab')
+    mainSection:AddButton({text = 'Copy PlaceID', confirm = false, callback = function()
+        setclipboard(game.PlaceId)
     end})
 
     mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
@@ -4804,19 +4756,15 @@ function library:CreateSettingsTab(menu)
         game:GetService("TeleportService"):Teleport(game.PlaceId);
     end})
 
-    mainSection:AddButton({text = 'Copy Join Script', callback = function()
-        setclipboard(([[game:GetService("TeleportService"):TeleportToPlaceInstance(%s, "%s")]]):format(game.PlaceId, game.JobId))
-    end})
-
-    mainSection:AddButton({text = 'Copy Game Invite', callback = function()
-        setclipboard(([[Roblox.GameLauncher.joinGameInstance(%s, "%s"))]]):format(game.PlaceId, game.JobId))
-    end})
-
     mainSection:AddButton({text = 'Unload', confirm = true, callback = function()
         library:Unload();
     end})
-
-    mainSection:AddSeparator({text = 'Keybinds'});
+    
+    mainSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.RightShift, callback = function()
+        library:SetOpen(not library.open)
+    end});
+    
+        mainSection:AddSeparator({text = 'Keybinds'});
     mainSection:AddToggle({text = 'Keybind Indicator', flag = 'keybind_indicator', callback = function(bool)
         library.keyIndicator:SetEnabled(bool);
     end})
@@ -4827,13 +4775,13 @@ function library:CreateSettingsTab(menu)
         library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
     end});
 
-    mainSection:AddSeparator({text = 'Watermark'})
-    mainSection:AddToggle({text = 'Enabled', flag = 'watermark_enabled'});
-    mainSection:AddList({text = 'Position', flag = 'watermark_pos', selected = 'Custom', values = {'Top', 'Top Left', 'Top Right', 'Bottom Left', 'Bottom Right', 'Custom'}, callback = function(val)
+    local Watermark = settingsTab:AddSection('Watermark', 2);
+    Watermark:AddToggle({text = 'Enabled', flag = 'watermark_enabled', state = true});
+    Watermark:AddList({text = 'Position', flag = 'watermark_pos', selected = 'Custom', values = {'Top', 'Top Left', 'Top Right', 'Bottom Left', 'Bottom Right', 'Custom'}, callback = function(val)
         library.watermark.lock = val;
     end})
-    mainSection:AddSlider({text = 'Custom X', flag = 'watermark_x', suffix = '%', min = 0, max = 100, increment = .1});
-    mainSection:AddSlider({text = 'Custom Y', flag = 'watermark_y', suffix = '%', min = 0, max = 100, increment = .1});
+    Watermark:AddSlider({text = 'Custom X', flag = 'watermark_x', suffix = '%', min = 0, max = 100, increment = .1});
+    Watermark:AddSlider({text = 'Custom Y', flag = 'watermark_y', suffix = '%', min = 0, max = 100, increment = .1});
 
     local themeStrings = {"Custom"};
     for _,v in next, library.themes do
