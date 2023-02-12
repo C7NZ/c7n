@@ -2324,64 +2324,6 @@ function library:init()
                             end)
     
                         end
-                        ----------------------
-
-    
-                        function color:SetColor(c3, nocallback)
-                            if typeof(c3) == 'Color3' then
-                                local h,s,v = c3:ToHSV(); c3 = fromhsv(h, clamp(s,.005,.995), clamp(v,.005,.995))
-                                self.color = c3;
-                                self.objects.background.Color = c3;
-                                if not nocallback then
-                                    self.callback(c3, self.trans);
-                                end
-                                if self.open then
-                                    window.colorpicker:Visualize(self.color, self.trans);
-                                end
-                                if self.flag then
-                                    library.flags[self.flag] = c3;
-                                end
-                            end
-                        end
-    
-                        function color:SetTrans(trans, nocallback)
-                            if typeof(trans) == 'number' then
-                                self.trans = trans;
-                                if not nocallback then
-                                    self.callback(self.color, trans);
-                                end
-                                if self.open then
-                                    window.colorpicker:Visualize(self.color, self.trans);
-                                end
-                            end
-                        end
-    
-                        function color:SetOpen(bool)
-                            if typeof(bool) == 'boolean' then
-                                self.open = bool
-                                if bool then
-                                    if window.colorpicker.selected then
-                                        window.colorpicker.selected.open = false;
-                                    end
-                                    window.colorpicker.selected = color
-                                    window.colorpicker.objects.background.Parent = self.objects.background;
-                                    window.colorpicker.objects.background.Visible = true;
-                                    window.colorpicker:Visualize(color.color, color.trans)
-                                elseif window.colorpicker.selected == color then
-                                    window.colorpicker.selected = nil;
-                                    window.colorpicker.objects.background.Parent = window.objects.background;
-                                    window.colorpicker.objects.background.Visible = false;
-                                end
-                            end
-                        end
-    
-                        tooltip(color);
-                        color:SetColor(color.color, true);
-                        color:SetTrans(color.trans, true);
-                        self:UpdateOptions();
-                        return color
-                    end
-
                     function toggle:AddBind(data)
                         local bind = {
                             class = 'bind';
