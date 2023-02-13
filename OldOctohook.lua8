@@ -1217,7 +1217,7 @@ function library:init()
         ----- Create Objects ----
         do
             local size = data.size or newUDim2(0, 525, 0, 650);
-            local position = data.position or newUDim2(0, 9000, 0, 150);
+            local position = data.position or newUDim2(0, 270, 0, 150);
             local objs = window.objects;
             local z = library.zindexOrder.window;
 
@@ -1276,7 +1276,7 @@ function library:init()
             })
 
             objs.title = utility:Draw('Text', {
-                Position = newUDim2(0,7,0,2);
+                Position = newUDim2(0,72,0,2);
                 ThemeColor = 'Primary Text';
                 Text = window.title;
                 Font = 2;
