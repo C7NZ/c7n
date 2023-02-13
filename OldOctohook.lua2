@@ -66,7 +66,6 @@ local library = {
     cheatname = startupArgs.cheatname or 'octohook';
     gamename = startupArgs.gamename or 'universal';
     fileext = startupArgs.fileext or '.txt';
-    domain = startupArgs.domain or '.rip';
 }
 
 library.themes = {
@@ -1218,7 +1217,7 @@ function library:init()
         ----- Create Objects ----
         do
             local size = data.size or newUDim2(0, 525, 0, 650);
-            local position = data.position or newUDim2(0, 270, 0, 150);
+            local position = data.position or newUDim2(0, 250, 0, 150);
             local objs = window.objects;
             local z = library.zindexOrder.window;
 
@@ -1322,7 +1321,7 @@ function library:init()
 
             objs.tabHolder = utility:Draw('Square', {
                 Size = newUDim2(1,0,0,20);
-                Position = newUDim2(0,0,0,21);
+                Position = newUDim2(0,0,0,-21);
                 Parent = objs.groupBackground;
                 Transparency = 0;
                 ZIndex = z+1;
@@ -4773,13 +4772,6 @@ function library:CreateSettingsTab(menu)
     end});
     Keybinds:AddSlider({text = 'Position Y', flag = 'keybind_indicator_y', min = 0, max = 100, increment = .1, value = 35, callback = function()
         library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
-    end});
-    
-    mainSection:AddBox({text = "Cheat Name", flag = "cheat_name", input = library.cheatname, callback = function(txt)
-        library.change_name(txt, flags.cheat_domain);
-     end});
-    mainSection:AddBox({text = "Cheat Domain", flag = "cheat_domain", input = library.domain, callback = function(txt)
-        library.change_name(flags.cheat_name, txt);
     end});
     
     local Watermark = settingsTab:AddSection('Watermark', 2);
