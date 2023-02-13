@@ -4753,7 +4753,6 @@ function library:CreateSettingsTab(menu)
     end})
 
     refreshConfigs()
-
     mainSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.RightShift, callback = function()
         library:SetOpen(not library.open)
     end});
@@ -4766,7 +4765,7 @@ function library:CreateSettingsTab(menu)
         game:GetService("TeleportService"):Teleport(game.PlaceId);
     end})
     
-    mainSection:AddButton({text = 'Copy PlaceID', confirm = false, callback = function()
+    mainSection:AddButton({text = 'Copy PlaceID', confirm = true, callback = function()
         setclipboard(game.PlaceId)
     end})
 
