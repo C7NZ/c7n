@@ -4766,7 +4766,7 @@ function library:CreateSettingsTab(menu)
         game:GetService("TeleportService"):Teleport(game.PlaceId);
     end})
     
-        mainSection:AddButton({text = 'Copy PlaceID', confirm = false, callback = function()
+    mainSection:AddButton({text = 'Copy PlaceID', confirm = false, callback = function()
         setclipboard(game.PlaceId)
     end})
 
