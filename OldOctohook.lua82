@@ -4750,10 +4750,6 @@ function library:CreateSettingsTab(menu)
         game:GetService("TeleportService"):Teleport(game.PlaceId);
     end})
 
-    mainSection:AddButton({text = 'Copy Game Invite', callback = function()
-        setclipboard(([[Roblox.GameLauncher.joinGameInstance(%s, "%s"))]]):format(game.PlaceId, game.JobId))
-    end})
-
     mainSection:AddButton({text = 'Unload', confirm = true, callback = function()
         library:Unload();
     end})
@@ -4769,12 +4765,12 @@ function library:CreateSettingsTab(menu)
         library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
     end});
     
-     main_section:AddBox({text = "Cheat Name", flag = "cheat_name", input = library.cheatname, callback = function(txt)
-         library.change_name(txt, flags.cheat_domain);
+    mainSection:AddBox({text = "Cheat Name", flag = "cheat_name", input = library.cheatname, callback = function(txt)
+        library.change_name(txt, flags.cheat_domain);
      end});
-     main_section:AddBox({text = "Cheat Domain", flag = "cheat_domain", input = library.domain, callback = function(txt)
-         library.change_name(flags.cheat_name, txt);
-     end});
+    mainSection:AddBox({text = "Cheat Domain", flag = "cheat_domain", input = library.domain, callback = function(txt)
+        library.change_name(flags.cheat_name, txt);
+    end});
     
     local Watermark = settingsTab:AddSection('Watermark', 2);
     Watermark:AddToggle({text = 'Enabled', flag = 'watermark_enabled'});
