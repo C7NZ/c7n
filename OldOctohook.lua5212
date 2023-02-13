@@ -4774,7 +4774,7 @@ function library:CreateSettingsTab(menu)
         library:Unload();
     end})
     
-    local Watermark = settingsTab:AddSection('Keybinds', 1);
+    local Keybinds = settingsTab:AddSection('Keybinds', 1);
     Keybinds:AddToggle({text = 'Keybind Indicator', flag = 'keybind_indicator', callback = function(bool)
         library.keyIndicator:SetEnabled(bool);
     end})
