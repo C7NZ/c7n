@@ -4593,7 +4593,7 @@ function library:init()
                 {'00:00:00', true},
                 {'M, D, Y', true},
             };
-            lock = 'Top';
+            lock = 'Custom';
             position = newUDim2(0,0,0,0);
             refreshrate = 25;
         }
@@ -4764,6 +4764,10 @@ function library:CreateSettingsTab(menu)
 
     mainSection:AddButton({text = 'Rejoin Game', confirm = true, callback = function()
         game:GetService("TeleportService"):Teleport(game.PlaceId);
+    end})
+    
+        mainSection:AddButton({text = 'Copy PlaceID', confirm = false, callback = function()
+        setclipboard(game.PlaceId)
     end})
 
     mainSection:AddButton({text = 'Copy Game Invite', callback = function()
