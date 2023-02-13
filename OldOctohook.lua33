@@ -4758,21 +4758,6 @@ function library:CreateSettingsTab(menu)
         library:SetOpen(not library.open)
     end});
 
-    mainSection:AddToggle({text = 'Disable Movement If Open', flag = 'disablemenumovement', callback = function(bool)
-        if bool and library.open then
-            actionservice:BindAction(
-                'FreezeMovement',
-                function()
-                    return Enum.ContextActionResult.Sink
-                end,
-                false,
-                unpack(Enum.PlayerActions:GetEnumItems())
-            )
-        else
-            actionservice:UnbindAction('FreezeMovement');
-        end
-    end})
-
     mainSection:AddButton({text = 'Join Discord', flag = 'joindiscord', confirm = true, callback = function()
         local res = syn.request({
             Url = 'http://127.0.0.1:6463/rpc?v=1',
@@ -4796,16 +4781,8 @@ function library:CreateSettingsTab(menu)
         setclipboard('discord.gg/seU6gab')
     end})
 
-    mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
-        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
-    end})
-
     mainSection:AddButton({text = 'Rejoin Game', confirm = true, callback = function()
         game:GetService("TeleportService"):Teleport(game.PlaceId);
-    end})
-
-    mainSection:AddButton({text = 'Copy Join Script', callback = function()
-        setclipboard(([[game:GetService("TeleportService"):TeleportToPlaceInstance(%s, "%s")]]):format(game.PlaceId, game.JobId))
     end})
 
     mainSection:AddButton({text = 'Copy Game Invite', callback = function()
@@ -4857,7 +4834,7 @@ function library:CreateSettingsTab(menu)
             end
         end
         setByPreset = false
-    end}):Select('Default');
+    end}):Select('Twitch');
 
     for i, v in pairs(library.theme) do
         mainSection:AddColor({text = i, flag = i, color = library.theme[i], callback = function(c3)
